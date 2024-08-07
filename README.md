@@ -45,6 +45,9 @@ This Express.js MVC application processes CSV files containing pharmacy products
     - Endpoint: `POST /upload-match`
     - Form field name: `file`
 
+2. Browser: http://localhost:3000/products
+    - Endpoint: `GET /products`
+
 ## Project Structure
 
 imum
@@ -63,6 +66,7 @@ imum
 | ├── error.ejs
 | ├── index.ejs
 | └── success.ejs
+| └──products.ejs
 ├── public
 | └── css
 |    └── styles.css
@@ -72,6 +76,9 @@ imum
 
 
 ## Endpoints
+- `GET /products`
+  - Get all pharmacy products.
+  - Example: `curl -F "file=@/path/to/products.csv" http://localhost:3000/products`
 
 - `POST /upload`
   - Uploads a CSV file containing pharmacy products.

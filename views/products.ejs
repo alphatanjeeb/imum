@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+      <h1 class="mt-5">Products</h1>
+      <table class="table table-bordered mt-3">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Manufacturer</th>
+            <th>Source</th>
+            <th>Source ID</th>
+            <th>Country Code</th>
+            <th>Barcode</th>
+            <th>Composition</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(product => { %>
+            <tr>
+              <td><%= product.title %></td>
+              <td><%= product.manufacturer %></td>
+              <td><%= product.source %></td>
+              <td><%= product.source_id %></td>
+              <td><%= product.country_code %></td>
+              <td><%= product.barcode %></td>
+              <td><%= product.composition %></td>
+              <td><%= product.description %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <div>
+        <% if (currentPage > 1) { %>
+          <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+          <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+        <% } %>
+      </div>
+    </div>
+  </body>
+  </html>
+

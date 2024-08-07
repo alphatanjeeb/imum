@@ -1,5 +1,5 @@
 const path = require('path');
-const { batchInsertProducts, batchInsertProductMatches } = require('../models/productModel');
+const { batchInsertProducts, batchInsertProductMatches, fetchAllProducts,countProducts  } = require('../models/productModel');
 const csvParser = require('csv-parser');
 const fs = require('fs');
 const fuzzy = require('fuzzy');
@@ -29,11 +29,7 @@ const processCSV = (filePath, batchSize) => {
   });
 };
 
-// Function to perform fuzzy matching
-const matchManufacturers = (manufacturerList, query) => {
-  const results = fuzzy.filter(query, manufacturerList);
-  return results.map(result => result.string);
-};
+
 
 // Controller methods
 const uploadCSV = async (req, res) => {
@@ -66,7 +62,32 @@ const uploadProductMatchCSV = async (req, res) => {
   }
 };
 
+const displayAllProducts = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 5; 
+  const offset = (page - 1) * limit;
+
+  try {
+    const [products, totalCount] = await Promise.all([
+      fetchAllProducts(limit, offset),
+      countProducts()
+    ]);
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    res.render('products', {
+      products,
+      currentPage: page,
+      totalPages,
+      limit,  
+    });
+  } catch (err) {
+    res.status(500).send(`Error retrieving products: ${err.message}`);
+  }
+};
+
 module.exports = {
   uploadCSV,
   uploadProductMatchCSV,
+  displayAllProducts,
 };

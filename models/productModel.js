@@ -1,7 +1,5 @@
 const db = require('./db');
 
-// Existing methods...
-
 const batchInsertProducts = (products) => {
   return new Promise((resolve, reject) => {
     const stmt = db.prepare(`INSERT INTO products (title, manufacturer, source, source_id, country_code, barcode, composition, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
@@ -32,8 +30,32 @@ const batchInsertProductMatches = (matches) => {
   });
 };
 
+const fetchAllProducts = (limit, offset) => {
+  return new Promise((resolve, reject) => {
+    db.all(`SELECT * FROM products LIMIT ? OFFSET ?`, [limit, offset], (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+};
+
+const countProducts = () => {
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT COUNT(*) AS count FROM products`, (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row.count);
+      }
+    });
+  });
+};
 module.exports = {
-  // Existing methods...
   batchInsertProducts,
   batchInsertProductMatches,
+  fetchAllProducts,
+  countProducts,
 };
